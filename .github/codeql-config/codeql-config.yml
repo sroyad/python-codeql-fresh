@@ -1,0 +1,29 @@
+name: "Python Optimized CodeQL Configuration"
+
+# Use high-precision query suites
+queries:
+  # Core security queries with high precision
+  - uses: security-extended
+  # Quality queries that catch real issues
+  - uses: security-and-quality
+
+# Exclude only the most noisy paths
+paths-ignore:
+  - "**/*.test.py"
+  - "**/*_test.py"
+  - "**/test/**"
+  - "**/tests/**"
+  - "**/venv/**"
+  - "**/env/**"
+  - "**/__pycache__/**"
+
+# Focus on production code paths
+paths:
+  - "*.py"
+
+# Exclude only the most noisy query types
+query-filters:
+  - exclude:
+      id: "py/unused-import"
+  - exclude:
+      id: "py/unused-variable"

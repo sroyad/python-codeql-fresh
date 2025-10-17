@@ -1,0 +1,43 @@
+name: Optimized CodeQL Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_optimized:
+        description: 'Run optimized CodeQL scan'
+        required: true
+        default: 'true'
+        type: boolean
+
+jobs:
+  optimized-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      id-token: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Initialize CodeQL (Optimized Configuration)
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+        build-mode: none
+        # Use custom configuration file
+        config-file: ./.github/codeql-config/codeql-config.yml
+        # Use optimized queries
+        queries: security-extended,security-and-quality
+        ram: 8192
+        threads: 0
+        timeout: 900
+        
+    - name: Perform CodeQL Analysis (Optimized)
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:python/optimized-high-precision"
